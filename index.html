@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Team Sheet"><meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="apple-touch-icon" href="icon.png">
-<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="apple-touch-icon.png">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Desert Springs Team Sheet</title>
 <style>
@@ -73,6 +72,9 @@ h2{font-size:18px;font-weight:700}
 .slot .nm{font-weight:600;overflow-wrap:anywhere}
 .slot .tag{font-size:12px;font-weight:600}
 .tag.no{color:var(--no)} .tag.maybe{color:var(--maybe)} .tag.none{color:var(--muted)} .tag.yes{color:var(--yes)}
+.grp-hd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tee{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tee input{width:auto;min-width:0;min-height:38px;padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);font-size:15px}
 .warn{background:var(--no-bg);color:var(--no);border-radius:10px;padding:8px 10px;font-size:14px;font-weight:600}
 .btn{min-height:46px;border-radius:10px;border:1px solid var(--line);background:var(--surface);padding:10px 14px;font-weight:600}
 .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
@@ -135,13 +137,12 @@ textarea{min-height:90px;resize:vertical;font-size:14px}
 <nav class="nav" aria-label="Sections"><div class="nav-in" id="nav"></div></nav>
 <div id="sheetHost"></div>
 <div id="toastHost"></div>
-<link rel="apple-touch-icon" href="icon.png">
 
 <script>
 (function(){
 "use strict";
 var KEY="desertSprings.teamApp.v1";
-var SLOTS=["Singles 1","Singles 2","Pair 1 · A","Pair 1 · B","Pair 2 · A","Pair 2 · B"];
+var SLOTS=["Singles 1","Singles 2","Pair 1 · A","Pair 1 · B","Pair 2 · A","Pair 2 · B","Sub 1","Sub 2"];
 
 // ---- Seed: loaded from the captain's Excel sheet ----
 function seed(){
@@ -171,9 +172,10 @@ function seed(){
 
 // ---- State ----
 var memory=null, storageOK=true;
+function norm(d){d.fixtures.forEach(function(x){x.av=x.av||{};x.team=(x.team||[]).concat([null,null,null,null,null,null,null,null]).slice(0,8)});return d}
 function load(){
-  try{var raw=localStorage.getItem(KEY); if(raw){var d=JSON.parse(raw); if(d&&Array.isArray(d.players)&&Array.isArray(d.fixtures)) return d;}}catch(e){storageOK=false}
-  return seed();
+  try{var raw=localStorage.getItem(KEY); if(raw){var d=JSON.parse(raw); if(d&&Array.isArray(d.players)&&Array.isArray(d.fixtures)) return norm(d);}}catch(e){storageOK=false}
+  return norm(seed());
 }
 function save(){
   try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){storageOK=false}
@@ -193,8 +195,8 @@ function daysTo(s){var d=pd(s);return d?Math.round((d-today0())/864e5):null}
 function rel(s){var n=daysTo(s);if(n===null)return "";if(n===0)return "Today";if(n===1)return "Tomorrow";if(n===-1)return "Yesterday";if(n<0)return Math.abs(n)+" days ago";if(n<14)return "In "+n+" days";if(n<70)return "In "+Math.round(n/7)+" weeks";return "In "+Math.round(n/30)+" months"}
 function result(f){if(f.us==null||f.them==null)return null;return {us:f.us,them:f.them,o:f.us>f.them?"W":f.us<f.them?"L":"D"}}
 function isHome(f){return /desert springs/i.test(f.venue||"")}
-function picked(pid,exclude){return S.fixtures.reduce(function(n,f){return n+((f.id!==exclude&&f.team.indexOf(pid)>-1)?1:0)},0)}
-function played(pid){return S.fixtures.reduce(function(n,f){return n+((result(f)&&f.team.indexOf(pid)>-1)?1:0)},0)}
+function picked(pid,exclude){return S.fixtures.reduce(function(n,f){return n+((f.id!==exclude&&f.team.slice(0,6).indexOf(pid)>-1)?1:0)},0)}
+function played(pid){return S.fixtures.reduce(function(n,f){return n+((result(f)&&f.team.slice(0,6).indexOf(pid)>-1)?1:0)},0)}
 function nextFx(){
   var c=S.fixtures.filter(function(f){return !result(f)&&f.date&&daysTo(f.date)>=0}).sort(function(a,b){return a.date<b.date?-1:1});
   return c[0]||null;
@@ -203,14 +205,19 @@ function counts(f){
   var y=0,m=0,n=0;S.players.forEach(function(p){var a=f.av[p.id];if(a==="y")y++;else if(a==="m")m++;else if(a==="n")n++});
   return {y:y,m:m,n:n,w:S.players.length-y-m-n};
 }
-function teamCount(f){return f.team.filter(Boolean).length}
+function teamCount(f){return f.team.slice(0,6).filter(Boolean).length}
 function status(f,pid){var a=f.av[pid];return a==="y"?"yes":a==="m"?"maybe":a==="n"?"no":"none"}
 var STATUS_TXT={yes:"Available",maybe:"Maybe",no:"Said no",none:"No reply yet"};
 
 function teamText(f){
   var t=f.team.map(function(id){return id?nm(id):"TBC"});
-  var L=["ALPEMA-SEDESA-DESERT SPRINGS","Round "+f.round+" · "+fmt(f.date,true),(f.venue||"Venue TBC")+(isHome(f)?" (home)":" (away)")+" v "+(f.opp||"TBC"),"",
-    "Singles",t[0],t[1],"","Pairs","1. "+t[2]+" & "+t[3],"2. "+t[4]+" & "+t[5]];
+  var times=[f.teeS,f.teeP1,f.teeP2].filter(Boolean).sort();
+  var tee=function(v,lbl){return v?" - "+lbl+" "+v:""};
+  var L=["ALPEMA-SEDESA-DESERT SPRINGS","Round "+f.round+" · "+fmt(f.date,true)+(times.length?" - Tee Time: "+times[0]:""),
+    (f.venue||"Venue TBC")+(isHome(f)?" (home)":" (away)")+" v "+(f.opp||"TBC"),"Team Selection",
+    "Singles"+tee(f.teeS,"Tee Time"),"1. "+t[0],"2. "+t[1],"","Pairs",
+    "1. "+t[2]+" & "+t[3]+tee(f.teeP1,"Tee time"),"2. "+t[4]+" & "+t[5]+tee(f.teeP2,"Tee time")];
+  var subs=[f.team[6],f.team[7]].filter(Boolean).map(nm); if(subs.length)L.push("","Subs: "+subs.join(" & "));
   if(f.notes&&f.notes.trim()){L.push("",f.notes.trim())}
   return L.join("\n");
 }
@@ -259,6 +266,7 @@ function matchesView(){
   h+='<button class="btn block" data-act="addround">+ Add a round</button>';
   return h;
 }
+function teeField(f,key,label){return '<label class="tee"><span>Tee</span><input type="time" id="'+key+'" data-fx="'+key+'" aria-label="'+label+'" value="'+esc(f[key]||"")+'"></label>'}
 function slotBtn(f,i){
   var id=f.team[i];
   if(!id)return '<button class="slot empty" data-act="slot" data-idx="'+i+'" aria-label="Pick player for '+SLOTS[i]+'">+ Pick player</button>';
@@ -272,17 +280,18 @@ function detailView(f){
   h+='<div class="top"><div class="eyebrow" id="hdrEye">Round '+f.round+' · '+esc(fmt(f.date,true))+'</div><h1 id="hdrTitle">v '+esc(f.opp||"Opponent TBC")+'</h1><div class="muted" id="hdrSub">'+esc(f.venue||"Venue TBC")+' · '+(isHome(f)?"Home":"Away")+'</div></div>';
   // Team sheet
   h+='<section class="card" aria-label="Team sheet"><div class="card-hd"><h2>Team sheet</h2><span class="pill '+(tc===6?"yes":"")+'">'+tc+' of 6 picked</span></div><div class="slots">'
-    +'<div class="grp"><div class="grp-t">Singles</div><div class="slotrow">'+slotBtn(f,0)+slotBtn(f,1)+'</div></div>'
-    +'<div class="grp"><div class="grp-t">Pair 1</div><div class="slotrow">'+slotBtn(f,2)+slotBtn(f,3)+'</div></div>'
-    +'<div class="grp"><div class="grp-t">Pair 2</div><div class="slotrow">'+slotBtn(f,4)+slotBtn(f,5)+'</div></div></div>';
+    +'<div class="grp"><div class="grp-hd"><div class="grp-t">Singles</div>'+teeField(f,"teeS","Singles tee time")+'</div><div class="slotrow">'+slotBtn(f,0)+slotBtn(f,1)+'</div></div>'
+    +'<div class="grp"><div class="grp-hd"><div class="grp-t">Pair 1</div>'+teeField(f,"teeP1","Pair 1 tee time")+'</div><div class="slotrow">'+slotBtn(f,2)+slotBtn(f,3)+'</div></div>'
+    +'<div class="grp"><div class="grp-hd"><div class="grp-t">Pair 2</div>'+teeField(f,"teeP2","Pair 2 tee time")+'</div><div class="slotrow">'+slotBtn(f,4)+slotBtn(f,5)+'</div></div>'
+    +'<div class="grp"><div class="grp-t">Substitutes</div><div class="slotrow">'+slotBtn(f,6)+slotBtn(f,7)+'</div></div></div>';
   if(bad)h+='<div class="warn" role="alert">'+bad+(bad===1?' selected player has':' selected players have')+' said no.</div>';
   h+='<button class="btn primary block" data-act="copyteam">Copy team for WhatsApp</button></section>';
   // Availability
   h+='<section class="card" aria-label="Availability"><div class="card-hd"><h2>Availability</h2></div>'
     +'<div class="small muted">'+c.y+' yes · '+c.m+' maybe · '+c.n+' no · '+c.w+' awaiting reply. Tap again to clear.</div><div class="av">';
   S.players.forEach(function(p){
-    var a=f.av[p.id], inT=f.team.indexOf(p.id)>-1;
-    h+='<div class="avr"><div class="avn"><b>'+esc(p.short)+(inT?' <span class="pill acc">In team</span>':'')+'</b><span class="num">HI '+esc(p.hcp==null?"–":p.hcp)+' · picked '+picked(p.id,null)+'×</span></div>'
+    var a=f.av[p.id], ti=f.team.indexOf(p.id), inT=ti>-1;
+    h+='<div class="avr"><div class="avn"><b>'+esc(p.short)+(inT?' <span class="pill acc">'+(ti>5?"Sub":"In team")+'</span>':'')+'</b><span class="num">HI '+esc(p.hcp==null?"–":p.hcp)+' · picked '+picked(p.id,null)+'×</span></div>'
       +'<div class="seg" role="group" aria-label="Availability for '+esc(p.short)+'">'
       +'<button class="y" data-act="av" data-pid="'+p.id+'" data-v="y" aria-pressed="'+(a==="y")+'">Yes</button>'
       +'<button class="m" data-act="av" data-pid="'+p.id+'" data-v="m" aria-pressed="'+(a==="m")+'">Maybe</button>'
@@ -299,13 +308,13 @@ function detailView(f){
     +'<div class="field"><label for="fxDate">Date</label><input id="fxDate" type="date" data-fx="date" value="'+esc(f.date)+'"></div>'
     +'<div class="field"><label for="fxVenue">Venue</label><input id="fxVenue" type="text" data-fx="venue" value="'+esc(f.venue)+'"></div>'
     +'<div class="field"><label for="fxOpp">Opponent</label><input id="fxOpp" type="text" data-fx="opp" value="'+esc(f.opp)+'"></div>'
-    +'<div class="field"><label for="fxNotes">Notes for the team sheet (tee time, meeting point)</label><textarea id="fxNotes" data-fx="notes">'+esc(f.notes)+'</textarea></div>'
+    +'<div class="field"><label for="fxNotes">Notes for the team sheet (e.g. Meet at the club at 1300hrs)</label><textarea id="fxNotes" data-fx="notes">'+esc(f.notes)+'</textarea></div>'
     +'<button class="btn danger block'+(ui.confirm==="delround"?" on":"")+'" data-act="delround">'+(ui.confirm==="delround"?"Tap again to delete this round":"Delete this round")+'</button></section>';
   return h;
 }
 function resBadge(f){var r=result(f);return r?'<span class="pill '+(r.o==="W"?"yes":r.o==="L"?"no":"maybe")+'">'+(r.o==="W"?"Won":r.o==="L"?"Lost":"Halved")+' '+r.us+'–'+r.them+'</span>':'<span class="pill">Not played</span>'}
 function playersView(){
-  var h='<div class="top"><div class="eyebrow">Squad</div><h1>Players</h1><div class="small muted">Played counts rounds with a result. Picked also includes upcoming rounds.</div></div>';
+  var h='<div class="top"><div class="eyebrow">Squad</div><h1>Players</h1><div class="small muted">Played counts rounds with a result. Picked also includes upcoming rounds. Substitutes are not counted.</div></div>';
   h+='<section class="card"><div class="cols"><span>Player</span><span>HI</span><span>Played</span><span>Picked</span></div><div>';
   S.players.forEach(function(p){
     h+='<button class="pl" data-act="editplayer" data-pid="'+p.id+'"><span style="min-width:0"><b style="font-weight:600;overflow-wrap:anywhere">'+esc(p.short)+(p.cap?' <span class="pill acc">Captain</span>':'')+'</b><br><span class="small muted">'+esc(p.name)+'</span></span>'
@@ -386,7 +395,7 @@ document.addEventListener("click",function(e){
     case "clearresult": f.us=null;f.them=null; save(); render(); break;
     case "addround":
       var n=S.fixtures.reduce(function(m,x){return Math.max(m,x.round)},0)+1;
-      S.fixtures.push({id:"f"+Date.now(),round:n,date:"",venue:"",opp:"",notes:"",us:null,them:null,av:{},team:[null,null,null,null,null,null]});
+      S.fixtures.push({id:"f"+Date.now(),round:n,date:"",venue:"",opp:"",notes:"",us:null,them:null,av:{},team:[null,null,null,null,null,null,null,null]});
       save(); ui.fid=S.fixtures[S.fixtures.length-1].id; render(); top(); break;
     case "delround":
       if(ui.confirm==="delround"){S.fixtures=S.fixtures.filter(function(x){return x.id!==f.id});ui.fid=null;ui.confirm=null;save();render();top();toast("Round deleted")}
@@ -414,11 +423,11 @@ document.addEventListener("click",function(e){
         ui.confirm="restore"; ui.pending=v0; render(); document.getElementById("restoreBox").value=v0; break;
       }
       try{var d=JSON.parse(ui.pending); if(!d||!Array.isArray(d.players)||!Array.isArray(d.fixtures))throw 0;
-        d.fixtures.forEach(function(x){x.av=x.av||{};x.team=(x.team||[]).concat([null,null,null,null,null,null]).slice(0,6)});
+        norm(d);
         S=d; ui.confirm=null; save(); render(); toast("Backup restored")}
       catch(err){ui.confirm=null;render();toast("That text is not a valid backup")} break;
     case "reset":
-      if(ui.confirm==="reset"){S=seed();ui.confirm=null;ui.fid=null;save();render();top();toast("Reset to the Excel data")}
+      if(ui.confirm==="reset"){S=norm(seed());ui.confirm=null;ui.fid=null;save();render();top();toast("Reset to the Excel data")}
       else{ui.confirm="reset";render()} break;
   }
 });
