@@ -91,7 +91,7 @@ h2{font-size:18px;font-weight:700}
 .avn b{font-weight:600;display:block;overflow-wrap:anywhere}
 .avn span{font-size:12px;color:var(--muted)}
 .seg{display:flex;gap:4px}
-.seg button{min-width:56px;min-height:40px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:14px;font-weight:600;color:var(--muted)}
+.seg button{min-width:52px;padding:0 6px;min-height:40px;border-radius:8px;border:1px solid var(--line);background:var(--surface);font-size:14px;font-weight:600;color:var(--muted)}
 .seg button[aria-pressed="true"].y{background:var(--yes-bg);color:var(--yes);border-color:var(--yes)}
 .seg button[aria-pressed="true"].m{background:var(--maybe-bg);color:var(--maybe);border-color:var(--maybe)}
 .seg button[aria-pressed="true"].n{background:var(--no-bg);color:var(--no);border-color:var(--no)}
@@ -102,13 +102,13 @@ input[type=text],input[type=date],input[type=number],textarea{width:100%;min-hei
 textarea{min-height:90px;resize:vertical;font-size:14px}
 .score{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
 
-.pl{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:10px 0;min-width:0}
+.pl{display:grid;grid-template-columns:1fr repeat(5,34px);gap:6px;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:10px 0;min-width:0}
 .pl:first-child{border-top:0}
-.pl .c{text-align:center;min-width:40px}
+.pl .c{text-align:center;min-width:0}
 .pl .c b{display:block;font-variant-numeric:tabular-nums;font-family:var(--font-display);font-size:17px}
 .pl .c span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.cols{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 0 4px}
-.cols span:nth-child(n+2){min-width:40px;text-align:center}
+.cols{display:grid;grid-template-columns:1fr repeat(5,34px);gap:6px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 0 4px}
+.cols span:nth-child(n+2){min-width:0;text-align:center}
 
 .nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:var(--surface);border-top:1px solid var(--line);
   padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));z-index:20}
@@ -151,7 +151,7 @@ var KEY="desertSprings.teamApp.v1", LKEY="desertSprings.lang.v1";
 var D={
 en:{
 nav_matches:"Matches",nav_players:"Players",nav_more:"Backup",
-won:"Won",halved:"Halved",lost:"Lost",points:"Points",
+won:"Won",drawn:"Drawn",lost:"Lost",points:"Points",
 round:"Round {n}",next:"Next",today:"Today",tomorrow:"Tomorrow",yesterday:"Yesterday",daysAgo:"{n} days ago",inDays:"In {n} days",inWeeks:"In {n} weeks",inMonths:"In {n} months",
 resNeeded:"Result needed",pickedOf:"{n}/6 picked",home:"Home",away:"Away",oppTbc:"Opponent TBC",venueTbc:"Venue TBC",dateTbc:"Date TBC",vs:"v",
 counts:"{y} yes · {m} maybe · {n} no · {w} awaiting",addRound:"+ Add a round",lang:"Language",
@@ -160,9 +160,9 @@ teeS:"Singles tee time",teeP1:"Pair 1 tee time",teeP2:"Pair 2 tee time",pickPlay
 warn1:"{n} selected player has said no.",warnN:"{n} selected players have said no.",copyTeam:"Copy team for WhatsApp",
 avail:"Availability",availHelp:"{y} yes · {m} maybe · {n} no · {w} awaiting reply. Tap again to clear.",inTeam:"In team",sub:"Sub",
 hi:"HI",pickedTimes:"picked {n}×",yes:"Yes",maybe:"Maybe",no:"No",availFor:"Availability for {name}",
-result:"Result",opponent:"Opponent",clear:"Clear",bWon:"Won",bLost:"Lost",bHalved:"Halved",notPlayed:"Not played",
+result:"Result",opponent:"Opponent",clear:"Clear",bWon:"Won",bLost:"Lost",bHalved:"Drawn",notPlayed:"Not played",
 details:"Match details",date:"Date",venue:"Venue",notesLbl:"Notes for the team sheet (e.g. Meet at the club at 1300hrs)",delRound:"Delete this round",delRound2:"Tap again to delete this round",
-squad:"Squad",playersHelp:"Played counts rounds with a result. Picked also includes upcoming rounds. Substitutes are not counted.",colPlayer:"Player",colHi:"HI",colPlayed:"Played",colPicked:"Picked",captain:"Captain",addPlayer:"+ Add a player",
+squad:"Squad",playersHelp:"Based on match results. A win is 2 points, a draw 1. Only the six team slots count, not substitutes.",colP:"P",colW:"W",colD:"D",colL:"L",colPts:"Pts",mHelp:"Tap the result of each match. A win is 2 points, a draw 1.",nOf4:"{n} of 4 recorded",bfNote:"This round is already counted in each player's earlier figures.",bfTitle:"Results before the app",bfHelp:"Earlier rounds, entered by hand.",colPlayer:"Player",colHi:"HI",colPlayed:"Played",colPicked:"Picked",captain:"Captain",addPlayer:"+ Add a player",
 keep:"Keep it safe",bkTitle:"Backup",noSave:"This browser is not saving data. Changes will be lost when you close the page.",
 whereTitle:"Where your data lives",whereText:"Everything is stored on this phone only. Add this page to your Home Screen first, then enter your data there, because the Home Screen app and Safari keep separate copies. Copy a backup now and then and keep it in Notes or WhatsApp.",
 copyBkTitle:"Copy a backup",copyBk:"Copy backup",bkAria:"Backup text",restoreTitle:"Restore a backup",pasteLbl:"Paste backup text",pastePh:"Paste here",restore:"Restore",restore2:"Tap again to replace all data",
@@ -177,7 +177,7 @@ tx_round:"Round {n}",tx_tee:"Tee Time",tx_teeLower:"Tee time",tx_selection:"Team
 },
 es:{
 nav_matches:"Partidos",nav_players:"Jugadores",nav_more:"Copia",
-won:"Ganados",halved:"Empatados",lost:"Perdidos",points:"Puntos",
+won:"Ganados",drawn:"Empatados",lost:"Perdidos",points:"Puntos",
 round:"Jornada {n}",next:"Próximo",today:"Hoy",tomorrow:"Mañana",yesterday:"Ayer",daysAgo:"Hace {n} días",inDays:"En {n} días",inWeeks:"En {n} semanas",inMonths:"En {n} meses",
 resNeeded:"Falta el resultado",pickedOf:"{n}/6 elegidos",home:"Local",away:"Visitante",oppTbc:"Rival por confirmar",venueTbc:"Campo por confirmar",dateTbc:"Fecha por confirmar",vs:"vs",
 counts:"{y} sí · {m} quizás · {n} no · {w} sin respuesta",addRound:"+ Añadir jornada",lang:"Idioma",
@@ -188,7 +188,7 @@ avail:"Disponibilidad",availHelp:"{y} sí · {m} quizás · {n} no · {w} sin re
 hi:"HCP",pickedTimes:"elegido {n}×",yes:"Sí",maybe:"Quizás",no:"No",availFor:"Disponibilidad de {name}",
 result:"Resultado",opponent:"Rival",clear:"Borrar",bWon:"Ganado",bLost:"Perdido",bHalved:"Empatado",notPlayed:"Sin jugar",
 details:"Datos del partido",date:"Fecha",venue:"Campo",notesLbl:"Notas para el equipo (p. ej. Quedamos en el club a las 13:00)",delRound:"Eliminar esta jornada",delRound2:"Toca de nuevo para eliminar esta jornada",
-squad:"Plantilla",playersHelp:"Jugados cuenta las jornadas con resultado. Elegidos incluye también las próximas jornadas. Los suplentes no cuentan.",colPlayer:"Jugador",colHi:"HCP",colPlayed:"Jugados",colPicked:"Elegidos",captain:"Capitán",addPlayer:"+ Añadir jugador",
+squad:"Plantilla",playersHelp:"Según los resultados de cada partido. Ganar vale 2 puntos y empatar 1. Solo cuentan los seis puestos del equipo, no los suplentes.",colP:"PJ",colW:"G",colD:"E",colL:"P",colPts:"Pts",mHelp:"Toca el resultado de cada partido. Ganar vale 2 puntos y empatar 1.",nOf4:"{n} de 4 anotados",bfNote:"Esta jornada ya está incluida en las cifras anteriores de cada jugador.",bfTitle:"Resultados anteriores a la app",bfHelp:"Jornadas anteriores, introducidas a mano.",colPlayer:"Jugador",colHi:"HCP",colPlayed:"Jugados",colPicked:"Elegidos",captain:"Capitán",addPlayer:"+ Añadir jugador",
 keep:"Mantenlo a salvo",bkTitle:"Copia de seguridad",noSave:"Este navegador no está guardando los datos. Los cambios se perderán al cerrar la página.",
 whereTitle:"Dónde se guardan tus datos",whereText:"Todo se guarda solo en este teléfono. Primero añade esta página a la pantalla de inicio y mete tus datos ahí, porque la app de la pantalla de inicio y Safari guardan copias separadas. Haz una copia de seguridad de vez en cuando y guárdala en Notas o en WhatsApp.",
 copyBkTitle:"Copiar una copia de seguridad",copyBk:"Copiar copia de seguridad",bkAria:"Texto de la copia de seguridad",restoreTitle:"Restaurar una copia de seguridad",pasteLbl:"Pega el texto de la copia",pastePh:"Pega aquí",restore:"Restaurar",restore2:"Toca de nuevo para sustituir todos los datos",
@@ -235,9 +235,19 @@ function seed(){
 // ---- State ----
 var storageOK=true;
 function norm(d){d.fixtures.forEach(function(x){x.av=x.av||{};x.team=(x.team||[]).concat([null,null,null,null,null,null,null,null]).slice(0,8)});return d}
+var BF={"juan":[1,0,1],"alejandro":[1,0,1],"bijan":[0,0,2],"chris":[0,0,1],"paco r.":[0,0,2],"joaquin":[0,0,1],"jose":[0,0,1],"stuart":[0,0,2]};
+function migrate(d){
+  if((d.v||1)<2){
+    d.players.forEach(function(p){var b=BF[String(p.short).toLowerCase()];p.bf=b?{w:b[0],d:b[1],l:b[2]}:{w:0,d:0,l:0}});
+    d.fixtures.forEach(function(f){if(f.round<=2){f.bf=true;if(f.round===2&&f.us==null&&f.them==null){f.us=2;f.them=6}}});
+    d.v=2;
+  }
+  return d;
+}
+function prep(d){return migrate(norm(d))}
 function load(){
-  try{var raw=localStorage.getItem(KEY); if(raw){var d=JSON.parse(raw); if(d&&Array.isArray(d.players)&&Array.isArray(d.fixtures)) return norm(d);}}catch(e){storageOK=false}
-  return norm(seed());
+  try{var raw=localStorage.getItem(KEY); if(raw){var d=JSON.parse(raw); if(d&&Array.isArray(d.players)&&Array.isArray(d.fixtures)) return prep(d);}}catch(e){storageOK=false}
+  return prep(seed());
 }
 function save(){
   try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){storageOK=false}
@@ -255,7 +265,18 @@ function fmt(s,yr){var d=pd(s);if(!d)return t("dateTbc");var o={weekday:"short",
 function today0(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
 function daysTo(s){var d=pd(s);return d?Math.round((d-today0())/864e5):null}
 function rel(s){var n=daysTo(s);if(n===null)return "";if(n===0)return t("today");if(n===1)return t("tomorrow");if(n===-1)return t("yesterday");if(n<0)return t("daysAgo",{n:Math.abs(n)});if(n<14)return t("inDays",{n:n});if(n<70)return t("inWeeks",{n:Math.round(n/7)});return t("inMonths",{n:Math.round(n/30)})}
-function result(f){if(f.us==null||f.them==null)return null;return {us:f.us,them:f.them,o:f.us>f.them?"W":f.us<f.them?"L":"D"}}
+var MP=[[0],[1],[2,3],[4,5]];
+function mDone(f){return f.m?[0,1,2,3].filter(function(i){return f.m[i]}).length:0}
+function result(f){
+  if(!f.bf&&mDone(f)===4){var us=0,them=0;[0,1,2,3].forEach(function(i){var v=f.m[i];us+=v==="W"?2:v==="D"?1:0;them+=v==="L"?2:v==="D"?1:0});return {us:us,them:them,o:us>them?"W":us<them?"L":"D"}}
+  if(f.us==null||f.them==null)return null;
+  return {us:f.us,them:f.them,o:f.us>f.them?"W":f.us<f.them?"L":"D"};
+}
+function stats(p){
+  var b=p.bf||{},w=+b.w||0,d=+b.d||0,l=+b.l||0;
+  S.fixtures.forEach(function(f){if(f.bf||!f.m)return;MP.forEach(function(idx,i){var v=f.m[i];if(!v)return;if(idx.some(function(k){return f.team[k]===p.id})){if(v==="W")w++;else if(v==="D")d++;else l++}})});
+  return {p:w+d+l,w:w,d:d,l:l,pts:2*w+d};
+}
 function isHome(f){return /desert springs/i.test(f.venue||"")}
 function picked(pid,exclude){return S.fixtures.reduce(function(n,f){return n+((f.id!==exclude&&f.team.slice(0,6).indexOf(pid)>-1)?1:0)},0)}
 function played(pid){return S.fixtures.reduce(function(n,f){return n+((result(f)&&f.team.slice(0,6).indexOf(pid)>-1)?1:0)},0)}
@@ -316,7 +337,7 @@ function matchesView(){
   S.fixtures.forEach(function(f){var r=result(f);if(!r)return;pf+=r.us;pa+=r.them;if(r.o==="W")w++;else if(r.o==="L")l++;else d++});
   var nx=nextFx(), nxId=nx&&nx.id;
   var h='<div class="top"><div class="toprow"><div><div class="eyebrow">Alpema-Sedesa</div><h1>Desert Springs</h1></div>'+langToggle()+'</div></div>';
-  h+='<div class="stats"><div class="stat"><b>'+w+'</b><span>'+t("won")+'</span></div><div class="stat"><b>'+d+'</b><span>'+t("halved")+'</span></div><div class="stat"><b>'+l+'</b><span>'+t("lost")+'</span></div><div class="stat"><b>'+pf+'–'+pa+'</b><span>'+t("points")+'</span></div></div>';
+  h+='<div class="stats"><div class="stat"><b>'+w+'</b><span>'+t("won")+'</span></div><div class="stat"><b>'+d+'</b><span>'+t("drawn")+'</span></div><div class="stat"><b>'+l+'</b><span>'+t("lost")+'</span></div><div class="stat"><b>'+pf+'–'+pa+'</b><span>'+t("points")+'</span></div></div>';
   S.fixtures.slice().sort(function(a,b){return a.round-b.round}).forEach(function(f){
     var r=result(f),c=counts(f),tc=teamCount(f),isNext=f.id===nxId;
     var right;
@@ -339,6 +360,18 @@ function slotBtn(f,i){
   if(!id)return '<button class="slot empty" data-act="slot" data-idx="'+i+'" aria-label="'+esc(t("pickAria",{slot:slotName(i)}))+'">'+t("pickPlayer")+'</button>';
   var s=status(f,id);
   return '<button class="slot" data-act="slot" data-idx="'+i+'"><span class="nm">'+esc(nm(id))+'</span><span class="tag '+s+'">'+(s==="yes"?"✓ ":s==="no"?"✕ ":s==="maybe"?"? ":"")+stTxt(s)+'</span></button>';
+}
+function matchCard(f){
+  var lbl=[slotName(0),slotName(1),t("pair1"),t("pair2")];
+  var h='<section class="card" aria-label="'+t("result")+'"><div class="card-hd"><h2>'+t("result")+'</h2><span id="resBadge">'+resBadge(f)+'</span></div><div class="small muted">'+t("mHelp")+'</div><div class="av">';
+  MP.forEach(function(idx,i){
+    var v=f.m?f.m[i]:null, names=idx.map(function(k){return f.team[k]?nm(f.team[k]):"–"}).join(" & ");
+    h+='<div class="avr"><div class="avn"><b>'+lbl[i]+'</b><span>'+esc(names)+'</span></div><div class="seg" role="group" aria-label="'+esc(lbl[i])+'">'
+      +'<button class="y" data-act="mres" data-i="'+i+'" data-v="W" aria-pressed="'+(v==="W")+'">'+t("bWon")+'</button>'
+      +'<button class="m" data-act="mres" data-i="'+i+'" data-v="D" aria-pressed="'+(v==="D")+'">'+t("bHalved")+'</button>'
+      +'<button class="n" data-act="mres" data-i="'+i+'" data-v="L" aria-pressed="'+(v==="L")+'">'+t("bLost")+'</button></div></div>';
+  });
+  return h+'</div></section>';
 }
 function detailView(f){
   var r=result(f),c=counts(f),tc=teamCount(f);
@@ -363,10 +396,10 @@ function detailView(f){
       +'<button class="n" data-act="av" data-pid="'+p.id+'" data-v="n" aria-pressed="'+(a==="n")+'">'+t("no")+'</button></div></div>';
   });
   h+='</div></section>';
-  h+='<section class="card" aria-label="'+t("result")+'"><div class="card-hd"><h2>'+t("result")+'</h2><span id="resBadge">'+resBadge(f)+'</span></div>'
+  if(!f.bf){h+=matchCard(f)}else h+='<section class="card" aria-label="'+t("result")+'"><div class="card-hd"><h2>'+t("result")+'</h2><span id="resBadge">'+resBadge(f)+'</span></div>'
     +'<div class="score"><div class="field"><label for="fxUs">Desert Springs</label><input id="fxUs" type="number" inputmode="numeric" min="0" step="0.5" data-fx="us" value="'+(f.us==null?"":f.us)+'"></div>'
     +'<div class="field"><label for="fxThem">'+t("opponent")+'</label><input id="fxThem" type="number" inputmode="numeric" min="0" step="0.5" data-fx="them" value="'+(f.them==null?"":f.them)+'"></div>'
-    +'<button class="btn" data-act="clearresult">'+t("clear")+'</button></div></section>';
+    +'<button class="btn" data-act="clearresult">'+t("clear")+'</button></div><div class="small muted">'+t("bfNote")+'</div></section>';
   h+='<section class="card" aria-label="'+t("details")+'"><h2>'+t("details")+'</h2>'
     +'<div class="field"><label for="fxDate">'+t("date")+'</label><input id="fxDate" type="date" data-fx="date" value="'+esc(f.date)+'"></div>'
     +'<div class="field"><label for="fxVenue">'+t("venue")+'</label><input id="fxVenue" type="text" data-fx="venue" value="'+esc(f.venue)+'"></div>'
@@ -375,13 +408,14 @@ function detailView(f){
     +'<button class="btn danger block'+(ui.confirm==="delround"?" on":"")+'" data-act="delround">'+(ui.confirm==="delround"?t("delRound2"):t("delRound"))+'</button></section>';
   return h;
 }
-function resBadge(f){var r=result(f);return r?'<span class="pill '+(r.o==="W"?"yes":r.o==="L"?"no":"maybe")+'">'+(r.o==="W"?t("bWon"):r.o==="L"?t("bLost"):t("bHalved"))+' '+r.us+'–'+r.them+'</span>':'<span class="pill">'+t("notPlayed")+'</span>'}
+function resBadge(f){var r=result(f);return r?'<span class="pill '+(r.o==="W"?"yes":r.o==="L"?"no":"maybe")+'">'+(r.o==="W"?t("bWon"):r.o==="L"?t("bLost"):t("bHalved"))+' '+r.us+'–'+r.them+'</span>':(!f.bf&&mDone(f)?'<span class="pill">'+t("nOf4",{n:mDone(f)})+'</span>':'<span class="pill">'+t("notPlayed")+'</span>')}
 function playersView(){
   var h='<div class="top"><div class="eyebrow">'+t("squad")+'</div><h1>'+t("nav_players")+'</h1><div class="small muted">'+t("playersHelp")+'</div></div>';
-  h+='<section class="card"><div class="cols"><span>'+t("colPlayer")+'</span><span>'+t("colHi")+'</span><span>'+t("colPlayed")+'</span><span>'+t("colPicked")+'</span></div><div>';
-  S.players.forEach(function(p){
-    h+='<button class="pl" data-act="editplayer" data-pid="'+p.id+'"><span style="min-width:0"><b style="font-weight:600;overflow-wrap:anywhere">'+esc(p.short)+(p.cap?' <span class="pill acc">'+t("captain")+'</span>':'')+'</b><br><span class="small muted">'+esc(p.name)+'</span></span>'
-      +'<span class="c"><b>'+esc(p.hcp==null?"–":p.hcp)+'</b></span><span class="c"><b>'+played(p.id)+'</b></span><span class="c"><b>'+picked(p.id,null)+'</b></span></button>';
+  h+='<section class="card"><div class="cols"><span>'+t("colPlayer")+'</span><span>'+t("colP")+'</span><span>'+t("colW")+'</span><span>'+t("colD")+'</span><span>'+t("colL")+'</span><span>'+t("colPts")+'</span></div><div>';
+  S.players.map(function(p){return {p:p,s:stats(p)}}).sort(function(x,y){return y.s.pts-x.s.pts||y.s.p-x.s.p||x.p.short.localeCompare(y.p.short)}).forEach(function(x){
+    var p=x.p,st=x.s;
+    h+='<button class="pl" data-act="editplayer" data-pid="'+p.id+'"><span style="min-width:0"><b style="font-weight:600;overflow-wrap:anywhere">'+esc(p.short)+(p.cap?' <span class="pill acc">'+t("captain")+'</span>':'')+'</b><br><span class="small muted num">'+t("hi")+' '+esc(p.hcp==null?"–":p.hcp)+'</span></span>'
+      +'<span class="c"><b>'+st.p+'</b></span><span class="c"><b>'+st.w+'</b></span><span class="c"><b>'+st.d+'</b></span><span class="c"><b>'+st.l+'</b></span><span class="c"><b>'+st.pts+'</b></span></button>';
   });
   h+='</div></section><button class="btn block" data-act="newplayer">'+t("addPlayer")+'</button>';
   return h;
@@ -424,6 +458,10 @@ function sheetView(){
       +'<div class="field"><label for="pName">'+t("fullName")+'</label><input id="pName" type="text" value="'+esc(p?p.name:"")+'"></div>'
       +'<div class="field"><label for="pHcp">'+t("hcpIdx")+'</label><input id="pHcp" type="number" inputmode="decimal" step="0.1" value="'+(p&&p.hcp!=null?p.hcp:"")+'"></div>'
       +'<label style="display:flex;gap:10px;align-items:center;min-height:44px"><input id="pCap" type="checkbox" style="width:22px;height:22px"'+(p&&p.cap?" checked":"")+'> '+t("teamCaptain")+'</label>'
+      +'<div class="grp"><div class="grp-t">'+t("bfTitle")+'</div><div class="small muted">'+t("bfHelp")+'</div><div class="slotrow" style="grid-template-columns:repeat(3,1fr)">'
+        +'<div class="field"><label for="pW">'+t("won")+'</label><input id="pW" type="number" inputmode="numeric" min="0" value="'+(p&&p.bf?p.bf.w:0)+'"></div>'
+        +'<div class="field"><label for="pD">'+t("drawn")+'</label><input id="pD" type="number" inputmode="numeric" min="0" value="'+(p&&p.bf?p.bf.d:0)+'"></div>'
+        +'<div class="field"><label for="pL">'+t("lost")+'</label><input id="pL" type="number" inputmode="numeric" min="0" value="'+(p&&p.bf?p.bf.l:0)+'"></div></div></div>'
       +'<button class="btn primary block" data-act="saveplayer">'+t("save")+'</button>'
       +(p?'<button class="btn danger block'+(ui.confirm==="delplayer"?" on":"")+'" data-act="delplayer">'+(ui.confirm==="delplayer"?t("removePlayer2"):t("removePlayer"))+'</button>':'');
   }
@@ -457,6 +495,7 @@ document.addEventListener("click",function(e){
     case "clearslot": f.team[ui.sheet.idx]=null; ui.sheet=null; save(); render(); break;
     case "closesheet": ui.sheet=null; ui.confirm=null; render(); break;
     case "copyteam": copyText(teamText(f),t("tTeam")); break;
+    case "mres": f.m=f.m||[null,null,null,null]; var iv=+D2.i; f.m[iv]=f.m[iv]===D2.v?null:D2.v; save(); render(); break;
     case "clearresult": f.us=null;f.them=null; save(); render(); break;
     case "addround":
       var n=S.fixtures.reduce(function(m,x){return Math.max(m,x.round)},0)+1;
@@ -471,9 +510,10 @@ document.addEventListener("click",function(e){
       var short=document.getElementById("pShort").value.trim(), full=document.getElementById("pName").value.trim()||short;
       if(!short){toast(t("tEnterName"));break}
       var hv=document.getElementById("pHcp").value, hcp=hv===""?null:parseFloat(hv), cap=document.getElementById("pCap").checked;
+      var gi=function(id){var v=parseInt(document.getElementById(id).value,10);return isNaN(v)||v<0?0:v}, bfv={w:gi("pW"),d:gi("pD"),l:gi("pL")};
       if(cap)S.players.forEach(function(p){p.cap=false});
-      if(ui.sheet.pid){var p=pl(ui.sheet.pid);p.short=short;p.name=full;p.hcp=hcp;p.cap=cap}
-      else S.players.push({id:"p"+Date.now(),short:short,name:full,hcp:hcp,cap:cap});
+      if(ui.sheet.pid){var p=pl(ui.sheet.pid);p.short=short;p.name=full;p.hcp=hcp;p.cap=cap;p.bf=bfv}
+      else S.players.push({id:"p"+Date.now(),short:short,name:full,hcp:hcp,cap:cap,bf:bfv});
       ui.sheet=null; save(); render(); toast(t("tSaved")); break;
     case "delplayer":
       if(ui.confirm==="delplayer"){var id=ui.sheet.pid;S.players=S.players.filter(function(p){return p.id!==id});
@@ -488,11 +528,11 @@ document.addEventListener("click",function(e){
         ui.confirm="restore"; ui.pending=v0; render(); document.getElementById("restoreBox").value=v0; break;
       }
       try{var d=JSON.parse(ui.pending); if(!d||!Array.isArray(d.players)||!Array.isArray(d.fixtures))throw 0;
-        norm(d);
+        d=prep(d);
         S=d; ui.confirm=null; save(); render(); toast(t("tRestored"))}
       catch(err){ui.confirm=null;render();toast(t("tInvalid"))} break;
     case "reset":
-      if(ui.confirm==="reset"){S=norm(seed());ui.confirm=null;ui.fid=null;save();render();top();toast(t("tReset"))}
+      if(ui.confirm==="reset"){S=prep(seed());ui.confirm=null;ui.fid=null;save();render();top();toast(t("tReset"))}
       else{ui.confirm="reset";render()} break;
   }
 });
